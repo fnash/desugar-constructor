@@ -1,6 +1,6 @@
 {
     "name": "fnash/desugar-constructor",
-    "type": "",
+    "type": "library",
     "description": "Desugar a php8 class constructor with equivalent class properties and constructor assignments",
     "keywords": ["desugar", "generator", "refactor"],
     "authors": [
