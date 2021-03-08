@@ -3,6 +3,7 @@
     "type": "library",
     "description": "Desugar a php8 class constructor with equivalent class properties and constructor assignments",
     "keywords": ["desugar", "generator", "refactor"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Fayez Naccache",
