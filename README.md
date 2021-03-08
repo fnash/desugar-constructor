@@ -9,8 +9,8 @@ composer require fnash/desugar-constructor
 TODO
 php desugar.php ./myClass.php
 
-## use a tool like php CS fixer
-TODO
+## Pretty printing
+Please consider using a tool like [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer).
 
 ## use phpstorm external tool
 TODO
