@@ -1,5 +1,5 @@
 # desugar-constructor
-
+Desugar a php8 class constructor with equivalent class properties and constructor assignments
 
 
 ## install

@@ -1,4 +1,14 @@
 {
+    "name": "fnash/desugar-constructor",
+    "type": "",
+    "description": "Desugar a php8 class constructor with equivalent class properties and constructor assignments",
+    "keywords": ["desugar", "generator", "refactor"],
+    "authors": [
+        {
+            "name": "Fayez Naccache",
+            "email": "fayez.naccache@gmail.com"
+        }
+    ],
     "require": {
         "nikic/php-parser": "^4.10"
     },
