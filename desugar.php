@@ -1,0 +1,74 @@
+<?php
+
+require_once 'vendor/autoload.php';
+
+use PhpParser\Error;
+use PhpParser\ParserFactory;
+use PhpParser\Node;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\PrettyPrinter;
+
+$classFilePath = array_pop($argv);
+
+$code = file_get_contents($classFilePath);
+
+
+function paramToStatement(Node\Param $param): Node\Stmt\Expression
+{
+    $propertyName = $param->var->name;
+
+    $leftVar = new Node\Expr\PropertyFetch(new Node\Expr\Variable('this'), $propertyName);
+    $rightVar = new Node\Expr\Variable($propertyName);
+
+    $nodeExpression = new PhpParser\Node\Expr\Assign($leftVar, $rightVar);
+
+    return new Node\Stmt\Expression($nodeExpression);
+}
+
+function paramToProperty(Node\Param $param): Node\Stmt\Property
+{
+    $propertyProperty = new Node\Stmt\PropertyProperty($param->var->name);
+
+    return new Node\Stmt\Property($param->flags, [$propertyProperty], [], $param->type);
+}
+
+// parse to AST
+$parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+try {
+    $ast = $parser->parse($code);
+} catch (Error $error) {
+    echo "Parse error: {$error->getMessage()}\n";
+    return;
+}
+
+// traverse AST
+$traverser = new NodeTraverser();
+$traverser->addVisitor(new class extends NodeVisitorAbstract {
+    public function enterNode(Node $class) {
+        if ($class instanceof Node\Stmt\Class_) {
+            $constructor = $class->getMethod('__construct');
+            if (!$constructor) {
+                return;
+            }
+
+            $constructorParams = $constructor->getParams();
+
+            foreach ($constructorParams as $constructorParam) {
+                $constructorStatements[] = paramToStatement($constructorParam);
+                $classProperties[] = paramToProperty($constructorParam);
+
+                $constructorParam->flags = 0;
+            }
+
+            array_unshift($class->stmts, ...$classProperties);
+            $constructor->stmts = $constructorStatements;
+        }
+    }
+});
+
+$ast = $traverser->traverse($ast);
+
+// back to php code
+$prettyPrinter = new PrettyPrinter\Standard();
+echo $prettyPrinter->prettyPrintFile($ast);
