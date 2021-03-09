@@ -1,17 +1,26 @@
 # desugar-constructor
 Desugar a php8 class constructor with equivalent class properties and constructor assignments
 
+## Install
+$ mkdir --parents tools/desugar-constructor
+$ composer require --working-dir=tools/desugar-constructor fnash/desugar-constructor
 
-## install
-composer require fnash/desugar-constructor
-
-## bootstrap a class
-TODO
-php desugar.php ./myClass.php
+## Usage
+$ tools/desugar-constructor/vendor/bin/desugar ./myClass.php
 
 ## Pretty printing
 Please consider using a tool like [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer).
 
-## use phpstorm external tool
-TODO
+## Use as a PhpStorm External Tool
+Menu Preferences => Tools => External tools
 
+### Dialog form
+**Program**: tools/desugar-constructor/vendor/bin/desugar
+
+**Arguments**: $FilePath$
+
+**Working directory**:  $FileDir$
+
+Add a Key map
+
+Enjoy!

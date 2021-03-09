@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 require_once 'vendor/autoload.php';
@@ -45,7 +46,8 @@ try {
 // traverse AST
 $traverser = new NodeTraverser();
 $traverser->addVisitor(new class extends NodeVisitorAbstract {
-    public function enterNode(Node $class) {
+    public function enterNode(Node $class)
+    {
         if ($class instanceof Node\Stmt\Class_) {
             $constructor = $class->getMethod('__construct');
             if (!$constructor) {
@@ -71,4 +73,6 @@ $ast = $traverser->traverse($ast);
 
 // back to php code
 $prettyPrinter = new PrettyPrinter\Standard();
-echo $prettyPrinter->prettyPrintFile($ast);
+$newCode = $prettyPrinter->prettyPrintFile($ast);
+
+file_put_contents($classFilePath, $newCode);
