@@ -3,7 +3,7 @@ Desugar a php8 class constructor with equivalent class properties and constructo
 
 ## Install
 ```console
-$ mkdir --parents tools/desugar-constructor
+$ mkdir -p tools/desugar-constructor
 $ composer require --working-dir=tools/desugar-constructor fnash/desugar-constructor
 ```
 
